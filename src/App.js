@@ -1,10 +1,16 @@
 import React from "react";
+import { Switch, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Register from "./pages/auth/Register";
+import Login from "./pages/auth/Login";
 
 const App = () => {
   return (
-    <div>
-      <h1>TechBay E-Commerce Platform</h1>
-    </div>
+    <Switch>
+      <Route exact path="/" component={Home} />
+      <Route exact path="/login" component={Login} />
+      <Route exact path="/register" component={Register} />
+    </Switch>
   );
 };
 
