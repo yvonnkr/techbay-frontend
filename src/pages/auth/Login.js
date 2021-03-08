@@ -44,8 +44,19 @@ const Login = ({ history }) => {
     }
   };
 
-  const googleLogin = () => {
-    console.log("google login");
+  const googleLogin = async () => {
+    try {
+      const result = await auth.signInWithPopup(googleAuthProvider);
+      const { user } = result;
+      const idTokenResult = await user.getIdTokenResult();
+
+      dispatch(createOrUpdateUser(user, idTokenResult));
+
+      history.push("/");
+    } catch (error) {
+      console.error(error);
+      toast.error("Invalid Email or Password");
+    }
   };
 
   const loginForm = () => (
@@ -91,6 +102,7 @@ const Login = ({ history }) => {
       <div className="row">
         <div className="col-md-6 offset-md-3">
           {loading && <Spin />}
+
           <h4>LOGIN</h4>
           <br />
 
