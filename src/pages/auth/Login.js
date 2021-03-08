@@ -20,6 +20,12 @@ const Login = ({ history }) => {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (user && user.token) {
+      history.push("/");
+    }
+  }, [user, history]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);

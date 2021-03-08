@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import Spin from "antd/lib/spin";
 import { toast } from "react-toastify";
 import { auth } from "../../firebase";
 import { isValidEmail } from "../../helpers/validation";
 
-const Register = ({ history }) => {
+const ForgotPassword = ({ history }) => {
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const user = useSelector((state) => state.user);
 
@@ -17,60 +19,54 @@ const Register = ({ history }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!isValidEmail(email)) {
-      toast.error("Please enter a valid email");
-      return;
-    }
+    setLoading(true);
 
     const config = {
-      url: process.env.REACT_APP_REGISTER_REDIRECT_URL,
+      url: process.env.REACT_APP_FORGOT_PASSWORD_REDIRECT,
       handleCodeInApp: true,
     };
 
     try {
-      await auth.sendSignInLinkToEmail(email, config);
+      await auth.sendPasswordResetEmail(email, config);
 
-      toast.success(
-        `Email has been sent to ${email}. Click the link to complete your registration.`
-      );
-
-      window.localStorage.setItem("emailForRegistration", email);
+      toast.success("Check your email for password reset link");
 
       setEmail("");
+      setLoading(false);
     } catch (error) {
       console.error(error);
       toast.error(error.message);
+      setLoading(false);
     }
   };
 
-  const registerForm = () => (
+  const forgotPasswordForm = () => (
     <form onSubmit={handleSubmit}>
       <input
-        type="text"
+        type="email"
         className="form-control"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        placeholder="Your email"
+        placeholder="Enter your email"
         autoFocus
       />
-
       <br />
-      <button type="submit" className="btn btn-raised">
-        Register
+      <button
+        className="btn btn-raised"
+        disabled={!email || !isValidEmail(email)}
+      >
+        Submit
       </button>
     </form>
   );
+
   return (
-    <div className="container p-5">
-      <div className="row">
-        <div className="col-md-6 offset-md-3">
-          <h4>REGISTER</h4>
-          {registerForm()}
-        </div>
-      </div>
+    <div className="container col-md-6 offset-md-3 p-5">
+      {loading ? <Spin /> : <h4>Forgot Password ?</h4>}
+
+      {forgotPasswordForm()}
     </div>
   );
 };
 
-export default Register;
+export default ForgotPassword;
