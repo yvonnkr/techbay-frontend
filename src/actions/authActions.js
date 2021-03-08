@@ -1,4 +1,4 @@
-import { LOGGED_IN_USER } from "./types";
+import { LOGGED_IN_USER, LOGOUT } from "./types";
 
 export const currentUser = (user, idTokenResult) => (dispatch) => {
   dispatch({
@@ -7,5 +7,12 @@ export const currentUser = (user, idTokenResult) => (dispatch) => {
       email: user.email,
       token: idTokenResult.token,
     },
+  });
+};
+
+export const logout = () => (dispatch) => {
+  dispatch({
+    type: LOGOUT,
+    payload: null,
   });
 };
