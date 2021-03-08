@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { auth } from "../../firebase";
+import { isValidEmail } from "../../helpers/validation";
 
 const Register = () => {
   const [email, setEmail] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!isValidEmail(email)) {
+      toast.error("Please enter a valid email");
+      return;
+    }
 
     const config = {
       url: process.env.REACT_APP_REGISTER_REDIRECT_URL,
@@ -32,7 +38,7 @@ const Register = () => {
   const registerForm = () => (
     <form onSubmit={handleSubmit}>
       <input
-        type="email"
+        type="text"
         className="form-control"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
