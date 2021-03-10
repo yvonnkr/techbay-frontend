@@ -3,8 +3,7 @@ import { Switch, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { ToastContainer } from "react-toastify";
 
-import { auth } from "./firebase";
-import { currentUser } from "./actions/authActions";
+import { getUserFromFirebase } from "./helpers/firebaseGetUser";
 
 import Home from "./pages/Home";
 import Register from "./pages/auth/Register";
@@ -16,20 +15,10 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 const App = () => {
   const dispatch = useDispatch();
 
-  //check firebase auth state and set user
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        const idTokenResult = await user.getIdTokenResult();
-        // console.log("user", user);
-        // console.log("token", idTokenResult);
-
-        dispatch(currentUser(user, idTokenResult));
-      }
-    });
-
-    // Cleanup
-    return () => unsubscribe();
+    const getCurrentUser = getUserFromFirebase(dispatch);
+    // cleanup
+    return () => getCurrentUser();
   }, [dispatch]);
 
   return (
