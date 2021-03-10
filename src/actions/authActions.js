@@ -1,14 +1,36 @@
+import axios from "axios";
 import { LOGGED_IN_USER, LOGOUT } from "./types";
 
-export const createOrUpdateUser = (user, idTokenResult) => async (dispatch) => {
-  //TODO: trycatch ajax/api call
-  dispatch({
-    type: LOGGED_IN_USER,
-    payload: {
-      email: user.email,
-      token: idTokenResult.token,
-    },
-  });
+const API = process.env.REACT_APP_API;
+
+export const createOrUpdateUser = (idTokenResult) => async (dispatch) => {
+  try {
+    const { data } = await axios.post(
+      `${API}/create-or-update-user`,
+      {},
+      {
+        headers: {
+          authToken: idTokenResult.token,
+        },
+      }
+    );
+
+    const { name, email, role, _id } = data;
+
+    dispatch({
+      type: LOGGED_IN_USER,
+      payload: {
+        _id,
+        name,
+        email,
+        role,
+        token: idTokenResult.token,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    //TODO: use helper method
+  }
 };
 
 export const currentUser = (user, idTokenResult) => (dispatch) => {

@@ -40,7 +40,7 @@ const Login = ({ history }) => {
       const { user } = result;
       const idTokenResult = await user.getIdTokenResult();
 
-      dispatch(createOrUpdateUser(user, idTokenResult));
+      dispatch(createOrUpdateUser(idTokenResult));
 
       history.push("/");
     } catch (error) {
@@ -56,7 +56,7 @@ const Login = ({ history }) => {
       const { user } = result;
       const idTokenResult = await user.getIdTokenResult();
 
-      dispatch(createOrUpdateUser(user, idTokenResult));
+      dispatch(createOrUpdateUser(idTokenResult));
 
       history.push("/");
     } catch (error) {
