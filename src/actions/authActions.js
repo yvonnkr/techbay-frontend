@@ -4,7 +4,9 @@ import { actionErrorsPayload } from "../helpers/actionErrors";
 
 const API = process.env.REACT_APP_API;
 
-export const createOrUpdateUser = (idTokenResult) => async (dispatch) => {
+export const createOrUpdateUser = (idTokenResult, history = null) => async (
+  dispatch
+) => {
   dispatch({ type: CLEAR_ERRORS });
 
   const token = idTokenResult.token;
@@ -29,6 +31,10 @@ export const createOrUpdateUser = (idTokenResult) => async (dispatch) => {
         token,
       },
     });
+
+    role === "admin"
+      ? history.push("/admin/dashboard")
+      : history.push("/user/history");
   } catch (error) {
     dispatch({
       type: GET_ERRORS,

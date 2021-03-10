@@ -11,6 +11,7 @@ import GoogleOutlined from "@ant-design/icons/GoogleOutlined";
 import { auth, googleAuthProvider } from "../../firebase";
 import { createOrUpdateUser } from "../../actions/authActions";
 import { isValidEmail } from "../../helpers/validation";
+import { redirectUserBasedOnRole } from "../../helpers/userRedirect";
 
 const Login = ({ history }) => {
   const [email, setEmail] = useState("");
@@ -21,9 +22,7 @@ const Login = ({ history }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (user && user.token) {
-      history.push("/");
-    }
+    redirectUserBasedOnRole(user, history);
   }, [user, history]);
 
   const handleSubmit = async (e) => {
@@ -40,9 +39,7 @@ const Login = ({ history }) => {
       const { user } = result;
       const idTokenResult = await user.getIdTokenResult();
 
-      dispatch(createOrUpdateUser(idTokenResult));
-
-      history.push("/");
+      dispatch(createOrUpdateUser(idTokenResult, history));
     } catch (error) {
       console.error(error);
       toast.error("Invalid Email or Password");
@@ -56,9 +53,7 @@ const Login = ({ history }) => {
       const { user } = result;
       const idTokenResult = await user.getIdTokenResult();
 
-      dispatch(createOrUpdateUser(idTokenResult));
-
-      history.push("/");
+      dispatch(createOrUpdateUser(idTokenResult, history));
     } catch (error) {
       console.error(error);
       toast.error("Invalid Email or Password");

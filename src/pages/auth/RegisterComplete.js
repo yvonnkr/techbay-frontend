@@ -43,9 +43,7 @@ const RegisterComplete = ({ history }) => {
         await user.updatePassword(password);
         const idTokenResult = await user.getIdTokenResult();
 
-        dispatch(createOrUpdateUser(idTokenResult));
-
-        history.push("/");
+        dispatch(createOrUpdateUser(idTokenResult, history));
       }
     } catch (error) {
       console.error(error);

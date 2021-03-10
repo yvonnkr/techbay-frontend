@@ -4,6 +4,7 @@ import Spin from "antd/lib/spin";
 import { toast } from "react-toastify";
 import { auth } from "../../firebase";
 import { isValidEmail } from "../../helpers/validation";
+import { redirectUserBasedOnRole } from "../../helpers/userRedirect";
 
 const ForgotPassword = ({ history }) => {
   const [email, setEmail] = useState("");
@@ -12,9 +13,7 @@ const ForgotPassword = ({ history }) => {
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
-    if (user && user.token) {
-      history.push("/");
-    }
+    redirectUserBasedOnRole(user, history);
   }, [user, history]);
 
   const handleSubmit = async (e) => {

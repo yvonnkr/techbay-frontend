@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { auth } from "../../firebase";
 import { isValidEmail } from "../../helpers/validation";
+import { redirectUserBasedOnRole } from "../../helpers/userRedirect";
 
 const Register = ({ history }) => {
   const [email, setEmail] = useState("");
@@ -10,9 +11,7 @@ const Register = ({ history }) => {
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
-    if (user && user.token) {
-      history.push("/");
-    }
+    redirectUserBasedOnRole(user, history);
   }, [user, history]);
 
   const handleSubmit = async (e) => {
