@@ -3,6 +3,7 @@ import { Link, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import Menu from "antd/lib/menu";
+import AppstoreOutlined from "@ant-design/icons/AppstoreOutlined";
 import UserAddOutlined from "@ant-design/icons/UserAddOutlined";
 import UserOutlined from "@ant-design/icons/UserOutlined";
 import SettingOutlined from "@ant-design/icons/SettingOutlined";
@@ -34,7 +35,7 @@ const Header = () => {
 
   return (
     <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal">
-      <Item key="home">
+      <Item key="home" icon={<AppstoreOutlined />}>
         <Link to="/">Home</Link>
       </Item>
 

@@ -8,8 +8,8 @@ const UserHistory = () => {
         <div className="col-md-2">
           <UserNav />
         </div>
-        <div className="col text-center">
-          <h4>
+        <div className="col text-center ">
+          <h4 className="mt-3">
             User Purchase Orders
             {/* TODO: {orders.length > 0 ? "User Purchase Orders" : "No Purchase Orders"} */}
           </h4>
