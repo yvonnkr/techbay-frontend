@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { Switch, Route } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Switch, Route, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 
 import { getUserFromFirebase } from "./helpers/firebaseGetUser";
@@ -15,15 +15,25 @@ import UserHistory from "./pages/user/UserHistory";
 import PrivateUserRoute from "./components/routes/PrivateUserRoute";
 import Password from "./pages/user/Password";
 import WishList from "./pages/user/WishList";
+import PrivateAdminRoute from "./components/routes/PrivateAdminRoute";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import { redirectUserBasedOnRole } from "./helpers/userRedirect";
 
 const App = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     const getCurrentUser = getUserFromFirebase(dispatch);
+
     // cleanup
     return () => getCurrentUser();
   }, [dispatch]);
+
+  useEffect(() => {
+    redirectUserBasedOnRole(user, history);
+  }, [history, user]);
 
   return (
     <>
@@ -39,6 +49,11 @@ const App = () => {
         <PrivateUserRoute exact path="/user/history" component={UserHistory} />
         <PrivateUserRoute exact path="/user/password" component={Password} />
         <PrivateUserRoute exact path="/user/wishlist" component={WishList} />
+        <PrivateAdminRoute
+          exact
+          path="/admin/dashboard"
+          component={AdminDashboard}
+        />
       </Switch>
     </>
   );

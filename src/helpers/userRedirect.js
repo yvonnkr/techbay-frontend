@@ -1,6 +1,6 @@
 export const redirectUserBasedOnRole = (user, history) => {
   if (user && user.token) {
-    user.role === "admin"
+    user.isAdmin
       ? history.push("/admin/dashboard")
       : history.push("/user/history");
   }
